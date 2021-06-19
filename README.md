@@ -123,9 +123,77 @@ php spark routes
 ![php spark routes](https://user-images.githubusercontent.com/81541764/122630896-71ceb500-d0f1-11eb-8d16-3e66acda5e62.jpg)
 
 Selanjutnya coba akses route yang telah dibuat dengan mengakses alamat url http://localhost:8080/about
+![about](https://user-images.githubusercontent.com/81541764/122631037-99724d00-d0f2-11eb-9133-ad3004ca60f7.JPG)
 
+Ketika diakses akan mucul tampilan error 404 file not found, itu artinya file/page tersebut tidak ada. Untuk dapat mengakses halaman tersebut,
+harus dibuat terlebih dahulu Contoller yang sesuai dengan routing yang dibuat yaitu Contoller Page.
 
+## Membuat Controller
+Selanjutnya adalah membuat Controller Page. Buat file baru dengan nama page.php pada direktori Controller kemudian isi kodenya seperti berikut.
+~~~
+<?php
 
+namespace App\Controllers;
 
+class Page extends BaseController {
+    public function about()   {
+        echo "Ini halaman About";
+    }
+    public function contact() {
+        echo "Ini halaman Contact";
+    }
+    public function faqs() {
+        echo "Ini halaman FAQ";
+    }
+}
+~~~
 
+## Auto Routing
+Secara default fitur autoroute pada Codeiginiter sudah aktif. Untuk mengubah status autoroute dapat mengubah nilai variabelnya.
+Untuk menonaktifkan ubah nilai true menjadi false.
+~~~
+$routes->setAutoRoute(true);
+~~~
+
+Tambahkan method baru pada Controller Page seperti berikut.
+~~~
+    public function tos() {
+        echo "ini halaman Term of Services";
+    }
+~~~
+Method ini belum ada pada routing, sehingga cara mengaksesnya dengan menggunakan alamat: http://localhost:8080/page/tos
+
+## Membuat View
+Selanjutnya adalam membuat view untuk tampilan web agar lebih menarik. Buat file baru dengan nama about.php pada
+direktori view (app/view/about.php) kemudian isi kodenya seperti berikut.
+~~~
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title><?= $title; ?></title>
+    </head>
+<body>
+    <h1><?= $title; ?></h1>
+    <hr>
+        <p><?= $content; ?></p>
+</body>
+</html>
+~~~
+
+Ubah method about pada class Controller Page menjadi seperti berikut:
+~~~
+    public function about() {
+        return view('about', [ 'title' => 'Halaman Abot', 'content' => 'Ini adalah halaman abaut
+        yang menjelaskan tentang isi halaman ini.' ]);
+    }
+~~~
+
+## Membuat Layout Web dengan CSS
+Pada dasarnya layout web dengan css dapat diimplamentasikan dengan mudah pada codeigniter. Yang perlu diketahui adalah, pada Codeigniter 4 file yang menyimpan asset css dan javascript terletak pada direktori public.
+Buat file css pada direktori public dengan nama style.css (copy file dari praktikum lab4_layout. Kita akan gunakan layout yang pernah dibuat pada praktikum 4.
+
+![Direktori asset](https://user-images.githubusercontent.com/81541764/122631381-9f1d6200-d0f5-11eb-88c8-edc88a658e2a.JPG)
+
+Kemudian buat folder template pada direktori view kemudian buat file header.php dan footer.php
 
