@@ -9,11 +9,17 @@ Kelas : TI 19 C1
 ## Persiapan
 Sebelum memulai menggunakan Framework Codeigniter, perlu dilakukan konfigurasi pada webserver. Beberapa ekstensi PHP perlu diaktifkan untuk kebutuhan pengembangan Codeigniter 4.
 Berikut beberapa ekstensi yang perlu diaktifkan:
+
 • php-json ekstension untuk bekerja dengan JSON;
+
 • php-mysqlnd native driver untuk MySQL;
+
 • php-xml ekstension untuk bekerja dengan XML;
+
 • php-intl ekstensi untuk membuat aplikasi multibahasa;
+
 • libcurl (opsional), jika ingin pakai Curl.
+
 Untuk mengaktifkan ekstentsi tersebut, melalu XAMPP Control Panel, pada bagian Apache klik Config -> PHP.ini
 ![Xampp](https://user-images.githubusercontent.com/81541764/122629945-a7bc6b00-d0ea-11eb-9f43-0da8cc1ca786.png)
 
@@ -23,9 +29,13 @@ Pada bagian extention, hilangkan tanda ; (titik koma) pada ekstensi yang akan di
 ## Instalasi Codeigniter 4
 Untuk melakukan instalasi Codeigniter 4 dapat dilakukan dengan dua cara, yaitu cara manual dan menggunakan composer. Pada praktikum ini kita menggunakan
 cara manual.
+
 • Unduh Codeigniter dari website https://codeigniter.com/download
+
 • Extrak file zip Codeigniter ke direktori htdocs/lab11_ci.
+
 • Ubah nama direktory framework-4.x.xx menjadi ci4.
+
 • Buka browser dengan alamat http://localhost/lab11_ci/ci4/public/
 
 ![codeigniter4](https://user-images.githubusercontent.com/81541764/122630296-cc194700-d0ec-11eb-8a85-d4beaa7ed113.JPG)
@@ -59,22 +69,37 @@ Contoh error yang terjadi. Untuk mencoba error tersebut, ubah kode pada file app
 ## Struktur Direktori
 Untuk lebih memahami Framework Codeigniter 4 perlu mengetahui struktur direktori dan file yang ada. Buka pada Windows Explorer atau dari Visual Studio Code -> Open Folder.
 Terdapat beberapa direktori dan file yang perlu dipahami fungsi dan kegunaannya.
+
 • .github folder ini kita butuhkan untuk konfigurasi repo github, seperti konfigurasi untuk build dengan github action;
+
 • app folder ini akan berisi kode dari aplikasi yang kita kembangkan;
+
 • public folder ini berisi file yang bisa diakses oleh publik, seperti file index.php, robots.txt, favicon.ico, ads.txt, dll;
+
 • tests folder ini berisi kode untuk melakukan testing dengna PHP unit;
+
 • vendor folder ini berisi library yang dibutuhkan oleh aplikasi, isinya juga termasuk kode core dari system CI.
+
 • writable folder ini berisi file yang ditulis oleh aplikasi. Nantinya, kita bisa pakai untuk menyimpan file yang di-upload, logs, session, dll.
 
   Sedangkan file-file yang berada pada root direktori CI sebagai berikut.
+
 • .env adalah file yang berisi variabel environment yang dibutuhkan oleh aplikasi.
+
 • .gitignore adalah file yang berisi daftar nama file dan folder yang akan diabaikan oleh Git.
+
 • build adalah script untuk mengubah versi codeigniter yang digunakan. Ada versi release (stabil) dan development (labil).
+
 • composer.json adalah file JSON yang berisi informasi tentang proyek dan daftar library yang dibutuhkannya. File ini digunakan oleh Composer sebagai acuan.
+
 • composer.lock adalah file yang berisi informasi versi dari libraray yang digunakan aplikasi.
+
 • license.txt adalah file yang berisi penjelasan tentang lisensi Codeigniter;
+
 • phpunit.xml.dist adalah file XML yang berisi konfigurasi untuk PHPunit.
+
 • README.md adalah file keterangan tentang codebase CI. Ini biasanya akan dibutuhkan pada repo github atau gitlab.
+
 • spark adalah program atau script yang berfungsi untuk menjalankan server, generate kode, dll.
 
 ![Struktur Direktori CI4](https://user-images.githubusercontent.com/81541764/122630721-2bc52180-d0f0-11eb-9437-66b700d8b542.JPG)
@@ -196,4 +221,66 @@ Buat file css pada direktori public dengan nama style.css (copy file dari prakti
 ![Direktori asset](https://user-images.githubusercontent.com/81541764/122631381-9f1d6200-d0f5-11eb-88c8-edc88a658e2a.JPG)
 
 Kemudian buat folder template pada direktori view kemudian buat file header.php dan footer.php
+
+File app/view/template/header.php
+~~~
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title><?= $title; ?></title>
+        <link rel="stylesheet" href="<?= base_url('/style.css');?>">
+    </head>
+    <body>
+        <div id="container">
+            <header>
+                <h1>Layout Sederhana</h1>
+            </header>
+            <nav>
+                <a href="<?= base_url('/');?>" class="active">Home</a>
+                <a href="<?= base_url('/artikel');?>">Artikel</a>
+                <a href="<?= base_url('/about');?>">About</a>
+                <a href="<?= base_url('/contact');?>">Kontak</a>
+            </nav>
+            <section id="wrapper">
+                <section id="main">
+~~~
+![header](https://user-images.githubusercontent.com/81541764/122631753-18b64f80-d0f8-11eb-8000-4efbf538d5e5.JPG)
+
+File app/view/template/footer.php
+~~~
+    </section>
+        <aside id="sidebar">
+            <div class="widget-box">
+                <h3 class="title">Widget Header</h3>
+                <ul>
+                    <li><a href="#">Widget Link</a></li>
+                    <li><a href="#">Widget Link</a></li>
+                </ul>
+            </div>
+            <div class="widget-box">
+                <h3 class="title">Widget Text</h3>
+                <p>Vestibulum lorem elit, iaculis in nisl volutpat, malesuada tincidunt arcu. Proin in leo fringilla,
+                    vestibulum mi porta, faucibus felis. Integer pharetra est nunc, nec pretium nunc pretium ac.</p>
+                </div>
+        </aside>
+    </section>
+    <footer>
+        <p>&copy; 2021 - Universitas Pelita Bangsa</p>
+    </footer>
+</div>
+</body>
+</html>
+~~~
+![footer](https://user-images.githubusercontent.com/81541764/122631824-bad63780-d0f8-11eb-8c7d-3abbd89ae05d.JPG)
+
+Kemudian ubah file app/view/about.php seperti berikut.
+~~~
+    <?= $this->include('template/header'); ?>
+        <h1><?= $title; ?></h1>
+    <hr>
+        <p><?= $content; ?></p>
+    <?= $this->include('template/footer'); ?>
+~~~
+Selanjutnya refresh tampilan pada alamat http://localhost:8080/about
 
