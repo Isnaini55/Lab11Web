@@ -1,10 +1,13 @@
 # Lab11Web
 
+
 ~~~
 Nama  : Isnaini Rizkyana
 NIM   : 311910254
 Kelas : TI 19 C1
 ~~~
+
+## Praktikum 11
 
 ## Persiapan
 Sebelum memulai menggunakan Framework Codeigniter, perlu dilakukan konfigurasi pada webserver. Beberapa ekstensi PHP perlu diaktifkan untuk kebutuhan pengembangan Codeigniter 4.
@@ -285,3 +288,105 @@ Kemudian ubah file app/view/about.php seperti berikut.
 Selanjutnya refresh tampilan pada alamat http://localhost:8080/about
 
 ![about](https://user-images.githubusercontent.com/81541764/122632031-37b5e100-d0fa-11eb-8ac6-8539c85c247a.JPG)
+
+
+
+~~~
+Nama  : Isnaini Rizkyana
+NIM   : 311910254
+Kelas : TI 19 C1
+~~~
+
+# Praktikum 12
+
+## Langkah-langkah Praktikum
+
+## Persiapan.
+Untuk memulai membuat aplikasi CRUD sederhana, yang perlu disiapkan adalah database server menggunakan MySQL. Pastikan MySQL Server sudah dapat dijalankan melalui XAMPP.
+
+## Membuat Database
+~~~
+CREATE DATABASE lab_ci4;
+~~~
+![Create Database](https://user-images.githubusercontent.com/81541764/124341415-65188980-dbe6-11eb-8524-d57d69c15781.JPG)
+
+
+## Membuat Tabel
+~~~
+CREATE TABLE artikel (
+  id INT(11) auto_increment,
+  judul VARCHAR(200) NOT NULL,
+  isi TEXT,
+  gambar VARCHAR(200),
+  status TINYINT(1) DEFAULT 0,
+  slug VARCHAR(200),
+  PRIMARY KEY(id)
+);
+~~~
+![Create Tabel](https://user-images.githubusercontent.com/81541764/124341472-db1cf080-dbe6-11eb-895e-914b659f720f.JPG)
+
+## Konfigurasi koneksi database
+Selanjutnya membuat konfigurasi untuk menghubungkan dengan database server. Konfigurasi dapat dilakukan dengan dua cara,
+yaitu pada file app/config/database.php atau menggunakan file .env. Pada praktikum ini kita gunakan konfigurasi pada file .env.
+
+![Konfigurasi Koneksi Database](https://user-images.githubusercontent.com/81541764/124341595-a8bfc300-dbe7-11eb-89cc-48ac32d7f9fa.JPG)
+
+
+## Membuat Model
+Selanjutnya adalah membuat Model untuk memproses data Artikel. Buat file baru pada direktori app/Models dengan nama ArtikelModel.php
+~~~
+<?php
+        namespace App\Models;
+        use CodeIgniter\Model;
+        class ArtikelModel extends Model {
+            protected $table = 'artikel';
+            protected $primaryKey = 'id';
+            protected $useAutoIncrement = true;
+            protected $allowedFields = ['judul', 'isi', 'status', 'slug', 'gambar'];
+        }
+~~~
+
+![Artikel Model php](https://user-images.githubusercontent.com/81541764/124341686-47e4ba80-dbe8-11eb-92e1-5f912aedca48.JPG)
+
+## Membuat Controller
+Buat Controller baru dengan nama Artikel.php pada direktori app/Controllers.
+~~~
+<?php
+    namespace App\Controllers;
+    
+    use App\Models\ArtikelModel;
+
+    class Artikel extends BaseController {
+        public function index()
+    {
+        $title = 'Daftar Artikel';
+        $model = new ArtikelModel();
+        $artikel = $model->findAll();
+        return view('artikel/index', compact('artikel', 'title'));
+    }
+}
+~~~
+![Artikel php](https://user-images.githubusercontent.com/81541764/124341809-436cd180-dbe9-11eb-9f9d-676688ee2cc0.JPG)
+
+## Membuat View
+Buat direktori baru dengan nama artikel pada direktori app/views, kemudian buat file baru dengan nama index.php.
+~~~
+<?= $this->include('template/header'); ?>
+
+<?php if($artikel): foreach($artikel as $row): ?>
+
+<article class="entry">
+<h2<a href="<?= base_url('/artikel/' . $row['slug']);?>"><?= $row['judul']; ?></a> </h2>
+<img src="<?= base_url('/gambar/' . $row['gambar']);?>" alt="<?= $row['judul']; ?>">
+<p><?= substr($row['isi'], 0, 200); ?></p>
+</article>
+<hr class="divider" />
+<?php endforeach; else: ?>
+<article class="entry">
+    <h2>Belum ada data.</h2>
+</article>
+<?php endif; ?>
+
+<?= $this->include('template/footer');?>
+~~~
+![index](https://user-images.githubusercontent.com/81541764/124341901-1240d100-dbea-11eb-9ef2-4842f628eac0.JPG)
