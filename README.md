@@ -291,11 +291,7 @@ Selanjutnya refresh tampilan pada alamat http://localhost:8080/about
 
 
 
-~~~
-Nama  : Isnaini Rizkyana
-NIM   : 311910254
-Kelas : TI 19 C1
-~~~
+
 
 # Praktikum 12
 
