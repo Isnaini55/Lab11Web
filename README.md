@@ -386,3 +386,4 @@ Buat direktori baru dengan nama artikel pada direktori app/views, kemudian buat 
 <?= $this->include('template/footer');?>
 ~~~
 ![index](https://user-images.githubusercontent.com/81541764/124341901-1240d100-dbea-11eb-9ef2-4842f628eac0.JPG)
+
