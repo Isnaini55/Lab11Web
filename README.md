@@ -303,7 +303,7 @@ Selanjutnya refresh tampilan pada alamat http://localhost:8080/about
 
 
 
-
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 # Praktikum 12
@@ -338,7 +338,8 @@ CREATE TABLE artikel (
 Selanjutnya membuat konfigurasi untuk menghubungkan dengan database server. Konfigurasi dapat dilakukan dengan dua cara,
 yaitu pada file app/config/database.php atau menggunakan file .env. Pada praktikum ini kita gunakan konfigurasi pada file .env.
 
-![Konfigurasi Koneksi Database](https://user-images.githubusercontent.com/81541764/124341595-a8bfc300-dbe7-11eb-89cc-48ac32d7f9fa.JPG)
+![Konfigurasi Koneksi Database](https://user-images.githubusercontent.com/81541764/125494867-d13275ff-8d64-44f8-b5c8-383bf8cd2d84.JPG)
+
 
 
 ## Membuat Model
@@ -399,4 +400,74 @@ Buat direktori baru dengan nama artikel pada direktori app/views, kemudian buat 
 <?= $this->include('template/footer');?>
 ~~~
 ![index](https://user-images.githubusercontent.com/81541764/124341901-1240d100-dbea-11eb-9ef2-4842f628eac0.JPG)
+
+Selanjutnya buka browser kembali, dengan mengakses url http://localhost:8080/artikel
+
+![membuat view](https://user-images.githubusercontent.com/81541764/125495142-5bc3f9aa-f303-47c0-b197-3fd388faf721.JPG)
+
+Belum ada data yang diampilkan. Kemudian coba tambahkan beberapa data pada database agar dapat ditampilkan datanya.
+~~~
+INSERT INTO artikel (judul, isi, slug) VALUE ('Artikel pertama', 'Lorem Ipsum adalah contoh teks atau dummy dalam industri percetakan dan
+penataan huruf atau typesetting. Lorem Ipsum telah menjadi standar contoh teks sejak tahun 1500an, saat seorang tukang cetak yang tidak dikenal
+mengambil sebuah kumpulan teks dan mengacaknya untuk menjadi sebuah buku contoh huruf.', 'artikel-pertama'), ('Artikel kedua', 'Tidak seperti
+anggapan banyak orang, Lorem Ipsum bukanlah teks-teks yang diacak. Ia berakar dari sebuah naskah sastra latin klasik dari era 45 sebelum masehi,
+hingga bisa dipastikan usianya telah mencapai lebih dari 2000 tahun.', 'artikel-kedua');
+~~~
+
+![localhost menambahkan artikel](https://user-images.githubusercontent.com/81541764/125496053-6c93ff06-ab9e-42b0-afc9-8f09eff345d8.JPG)
+
+
+Refresh kembali browser, sehingga akan ditampilkan hasilnya.
+
+![menambahkan artikel](https://user-images.githubusercontent.com/81541764/125496087-ad74096f-c2a5-4e49-beca-a340b4b96569.JPG)
+
+## Membuat Tampilan Detail Artikel
+Tampilan pada saat judul berita di klik maka akan diarahkan ke halaman yang berbeda. Tambahkan fungsi baru pada Controller Artikel dengan nama view().
+~~~
+   public function view($slug)
+    {
+        $model = new ArtikelModel();
+        $artikel = $model->where([
+            'slug' => $slug
+        ])->first();
+        
+        // Menampilkan error apabila data tidak ada.
+        if (!$artikel)
+        {
+            throw PageNotFoundException::forPageNotFound();
+        }
+        $title = $artikel['judul'];
+        return view('artikel/detail', compact('artikel', 'title'));
+    }
+~~~
+
+![Membuat tampilan detail Artikel](https://user-images.githubusercontent.com/81541764/125497919-ec523717-8588-451b-b60d-f3a126eef1f7.JPG)
+
+## Membuat View Detail
+Buat view baru untuk halaman detail dengan nama app/views/artikel/detail.php.
+
+~~~
+<?= $this->include('template/header'); ?>
+
+<article class="entry">
+    <h2><?= $artikel['judul']; ?></h2>
+    <img src="<?= base_url('/gambar/' . $artikel['gambar']);?>" alt="<?= $artikel['judul']; ?>">
+    <p><?= $row['isi']; ?></p>
+</article>
+
+<?= $this->include('template/footer'); ?>
+~~~
+
+![Membuat View Detail](https://user-images.githubusercontent.com/81541764/125498574-da22daae-44c8-4d91-a7fc-57e2cb4ce35b.JPG)
+
+## Membuat Routing untuk artikel detail
+Buka Kembali file app/config/Routes.php, kemudian tambahkan routing untuk artikel detail.
+~~~
+$routes->get('/artikel/(:any)', 'Artikel::view/$1');
+~~~
+
+![Membuat Routing untuk artikel detail](https://user-images.githubusercontent.com/81541764/125499043-43d8655a-2277-4ee9-9b6c-1be01283c4cf.JPG)
+
+
+
 
