@@ -299,7 +299,8 @@ Kemudian ubah file app/view/about.php seperti berikut.
 ~~~
 Selanjutnya refresh tampilan pada alamat http://localhost:8080/about
 
-![about](https://user-images.githubusercontent.com/81541764/122632031-37b5e100-d0fa-11eb-8ac6-8539c85c247a.JPG)
+![layout dengan css](https://user-images.githubusercontent.com/81541764/125446092-ba1b9991-9a1d-44dd-80ef-60a730dcfb47.JPG)
+
 
 
 
