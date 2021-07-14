@@ -466,8 +466,80 @@ Buka Kembali file app/config/Routes.php, kemudian tambahkan routing untuk artike
 $routes->get('/artikel/(:any)', 'Artikel::view/$1');
 ~~~
 
-![Membuat Routing untuk artikel detail](https://user-images.githubusercontent.com/81541764/125499043-43d8655a-2277-4ee9-9b6c-1be01283c4cf.JPG)
+![Membuat Routing untuk artikel detail](https://user-images.githubusercontent.com/81541764/125507964-4a4f059b-12c7-412e-a956-99f3b3b8f487.JPG)
 
+## Membuat Menu Admin
+Menu admin adalah untuk proses CRUD data artikel. Buat method baru pada Controller Artikel dengan nama admin_index().
+~~~
+    public function admin_index()
+    {
+        $title = 'Daftar Artikel';
+        $model = new ArtikelModel();
+        $artikel = $model->findAll();
+        
+        return view('artikel/admin_index', compact('artikel', 'title'));
+    }
+~~~
+
+![Membuat Menu Admin](https://user-images.githubusercontent.com/81541764/125516143-d6b7fcc0-de7a-45d6-aae2-e5429a3bada0.JPG)
+
+Selanjutnya buat view untuk tampilan admin dengan nama admin_index.php
+~~~
+<?= $this->include('template/admin_header'); ?>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Judul</th>
+            <th>Status</th>
+            <th>AKsi</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if($artikel): foreach($artikel as $row): ?>
+            <tr>
+                <td><?= $row['id']; ?></td>
+                <td>
+                    <b><?= $row['judul']; ?></b>
+                    <p><small><?= substr($row['isi'], 0, 50); ?></small></p>
+                </td>
+                <td><?= $row['status']; ?></td>
+                <td>
+                    <a class="btn" href="<?= base_url('/admin/artikel/edit/' . $row['id']);?>">Ubah</a>
+                    <a class="btn btn-danger" onclick="return confirm('Yakin menghapus data?');"
+                    href="<?= base_url('/admin/artikel/delete/' . $row['id']);?>">Hapus</a>
+                </td>
+            </tr>
+            <?php endforeach; else: ?>
+                <tr>
+                    <td colspan="4">Belum ada data.</td>
+                </tr>
+                    <?php endif; ?>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>ID</th>
+            <th>Judul</th>
+            <th>Status</th>
+            <th>AKsi</th>
+        </tr>
+    </tfoot>
+</table>
+<?= $this->include('template/admin_footer'); ?>
+~~~
+
+Tambahkan routing untuk menu admin seperti berikut:
+
+~~~
+$routes->group('admin', function($routes)
+{
+	$routes->get('artikel', 'Artikel::admin_index');
+	$routes->add('artikel/add', 'Artikel::add');
+	$routes->add('artikel/edit/(:any)', 'Artikel::edit/$1');
+	$routes->get('artikel/delete/(:any)', 'Artikel::delete/$1');
+});
+~~~
+![routing admin](https://user-images.githubusercontent.com/81541764/125517447-e876e6c1-0405-4c20-b794-d62a5240f0f6.JPG)
 
 
 
